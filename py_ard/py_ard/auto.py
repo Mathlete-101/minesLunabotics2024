@@ -221,7 +221,7 @@ class AutoNode(Node):
             state = 'gotoDig'
         #1 -> publish goal
         elif(state == 'gotoDig'):
-            self.publish_goal_pose(self.xBerm, self.yBerm+self.lengthLARI, self.CAM_pose.position.z, 1.57, 0.0, 0.0): #TODO UPDATE FOR KENNEDY #FOR UCF X=6.10 (close side of berm) Y=1.43 Lari is 1.44 M long
+            self.publish_goal_pose(self.xBerm, self.yBerm+self.lengthLARI, self.CAM_pose.position.z, 1.57, 0.0, 0.0) #TODO UPDATE FOR KENNEDY #FOR UCF X=6.10 (close side of berm) Y=1.43 Lari is 1.44 M long
             self.cmd_vel_from_cmd_vel = True 
             while self.check_waypoint_reached() != 2:
                 #state = 'linedUP' #add

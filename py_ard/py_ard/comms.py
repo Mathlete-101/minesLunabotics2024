@@ -8,9 +8,15 @@ from nav_msgs.msg import Odometry
 
 import time, threading
 
-ser = serial.Serial('/dev/ttyACM0', baudrate=115200, timeout=0)
-ser.reset_input_buffer()
-
+class printser():
+    def write(self, message):
+        print(message)
+    def __getattr__(self, name):
+        pass
+    def reset_input_buffer(self):
+        pass
+    def reset_output_buffer(self):
+        pass
 
 
 class VelocityComm(Node):
@@ -65,6 +71,15 @@ class VelocityComm(Node):
 
     def __init__(self):
         super().__init__('Comm')
+        # set up serial connection to arduino
+        try:
+            self.ser = serial.Serial('/dev/ttyACM0', baudrate=115200, timeout=0)
+            self.ser.reset_input_buffer()
+        except Exception as e:
+            print("Could not connect to arduino :(")
+            print(e)
+            self.ser = printser() 
+
         self.subscription2 = self.create_subscription(
             Joy,
             'joy',
@@ -135,35 +150,36 @@ class VelocityComm(Node):
             self.digActivate = self._digActivate
             
 
-        print("dig speed:" + str(self.DigLinButton))
-        ser.reset_input_buffer()
-        ser.reset_output_buffer()
-        start = "<"
-        finish = str(">")
-        ser.write(start.encode())
-        ser.write(str(float(self.x)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.y)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.z)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.digActivate)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.ConveyorButton)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.DeployButton)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.DigLinButton)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.DigBeltButton)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.BucketConveyor)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.wheelToAdjust)).encode())
-        ser.write(str(',').encode())
-        ser.write(str(float(self.adjustAmount)).encode())
-        ser.write(finish.encode())
-        #self.get_logger().info('I heard: "%s"' % self.digActivate)
+        if self.ser != None:
+
+            self.ser.reset_input_buffer()
+            self.ser.reset_output_buffer()
+            start = "<"
+            finish = str(">")
+            print(self.x, self.y, self.z)
+            self.ser.write(start.encode())
+            self.ser.write(str(float(self.x)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.y)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.z)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.digActivate)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.ConveyorButton)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.DeployButton)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.DigLinButton)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.DigBeltButton)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.BucketConveyor)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.wheelToAdjust)).encode())
+            self.ser.write(str(',').encode())
+            self.ser.write(str(float(self.adjustAmount)).encode())
+            self.ser.write(finish.encode())
         
         threading.Timer(.1, self.comms).start()
 
@@ -242,7 +258,8 @@ def main(args=None):
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    ser.close()
+    if self.ser != None:
+        self.ser.close()
     velocityComm.destroy_node()
     #buttonPressComm.destroy_node()
     rclpy.shutdown()
