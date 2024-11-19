@@ -1,0 +1,2 @@
+#at the present moment, requirements should be added to the global python install on the pi
+pyserial==3.5
