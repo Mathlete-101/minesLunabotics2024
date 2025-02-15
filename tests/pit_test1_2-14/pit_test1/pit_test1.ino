@@ -251,13 +251,13 @@ void actuatorControl() {
     static float PWM_Actuator = 150.0;
 
     // Control actuator based on button inputs
-    if (buttons[0] && !buttons[1] && !buttons[2] && !buttons[3]) {
+    if (buttons[0]) {
       // Manage PWM using DPAD
-        PWM_Actuator = constrain(PWM_Actuator + (dpad_y * 0.1), 0.0, 255.0);
+        PWM_Actuator = constrain(PWM_Actuator + ((float)dpad_y * 0.1), 0.0, 255.0);
         actuator.setSpeed(PWM_Actuator);  // Extend
-    } else if (!buttons[0] && buttons[1] && !buttons[2] && !buttons[3]) {
+    } else if (buttons[1]) {
       // Manage PWM using DPAD
-        PWM_Actuator = constrain(PWM_Actuator + (dpad_y * 0.1), 0.0, 255.0);
+        PWM_Actuator = constrain(PWM_Actuator + ((float)dpad_y * 0.1), 0.0, 255.0);
         actuator.setSpeed(-PWM_Actuator); // Retract
     } else {
         actuator.setSpeed(0);  // Stop if no buttons are pressed
@@ -269,9 +269,9 @@ void digBeltControl() {
   static float PWM_DigBelt = 150.0;
 
    // X button pressed, no other buttons pressed, dig
-  if (!buttons[0] && !buttons[1] && buttons[2] && !buttons[3]) {
+  if (buttons[2]) {
     // manage PWM 
-    PWM_DigBelt = constrain(PWM_DigBelt + (dpad_y * 0.1), 0.0, 255.0);
+    PWM_DigBelt = constrain(PWM_DigBelt + ((float)dpad_y * 0.1), 0.0, 255.0);
     digBelt.setSpeed(PWM_DigBelt);
   }
   // stop motor if not used
@@ -285,9 +285,9 @@ void convBeltControl() {
   static float PWM_ConvBelt = 100.0;
 
   // Y button pressed, no other buttons pressed, dump
-  if (!buttons[0] && !buttons[1] && !buttons[2] && buttons[3]) {
+  if (buttons[3]) {
      // manage PWM 
-    PWM_ConvBelt = constrain(PWM_ConvBelt + (dpad_y * 0.1), 0.0, 255.0);
+    PWM_ConvBelt = constrain(PWM_ConvBelt + ((float)dpad_y * 0.1), 0.0, 255.0);
     convBelt.setSpeed(PWM_ConvBelt);
   }
   // stop motor if not used
