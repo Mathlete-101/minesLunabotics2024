@@ -11,7 +11,7 @@
 #define ROBOTCONSTANTS_H
 
 // wheels
-#define WHEEL_RADIUS_M  0.1574 
+#define WHEEL_RADIUS_M  0.0765625
 #define WHEEL_BASE_M    0.2711297
 #define ENC_CNT_PER_REV  5281       // conflicting numbers from website, spec sheet, and experiment. Within 0.005% error
 

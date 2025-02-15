@@ -459,16 +459,12 @@ void Robot::goForwardM(double desDistanceMeters) {
     // loop
     while (abs(error) > delta || abs(phiVelAct) > 0 || abs(rhoVelAct) > 0) {
         // update values
-        
         tracker->update();
         rhoVelAct = tracker->getRhoSpeedMpS();
         rhoPosAct = tracker->getRhoPosM();
         phiVelAct = tracker->getPhiSpeedRpS();
         phiPosAct = tracker->getPhiPosRad();
         error = rhoPosDes - rhoPosAct;
-
-        
-
         // compute controller outputs
         rhoPosCtrl->Compute();
         rhoVelCtrl->Compute();
