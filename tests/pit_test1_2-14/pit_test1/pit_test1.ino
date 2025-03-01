@@ -19,13 +19,13 @@
 
 #define RIGHT_B_PWM 5
 #define RIGHT_B_DIR 16   // spins opposite way, encoders inc with current forward
-#define ENCR_A_BR 19
-#define ENCR_B_BR 29
+#define ENCR_A_BR 3
+#define ENCR_B_BR 23
 
 #define LEFT_B_PWM 12
 #define LEFT_B_DIR 17
-#define ENCR_A_BL 3
-#define ENCR_B_BL 23
+#define ENCR_A_BL 19
+#define ENCR_B_BL 29
 
 #define ACT_MTR_PWM 11        
 #define ACT_MTR_DIR 15 
@@ -346,36 +346,6 @@ void printData() {
     Serial.println(Ki);
 }
 
-// void processCmd(char command) {
-
-//   // max speed for each wheel is 0.412 m/s or 25 rpm
-//   if (command == '+') {
-//     desired_speed_mps += 0.1;
-//   }
-//   else if (command == '-') {
-//     desired_speed_mps -= 0.1;
-//   }
-//   else if (command == 'p') {
-//     print = !print;
-//   }
-//   else if (command == 'r') {
-//       desired_angular_speed_rps += 0.1; // Increase rotation speed (counterclockwise) // maybe needs to increment faster for more response, has a huge turning radius rn
-//     }
-//   else if (command == 'l') {
-//       desired_angular_speed_rps -= 0.1; // Decrease rotation speed (clockwise)
-//   }
-//   else {
-//       desired_speed_mps = 0;
-//       desired_angular_speed_rps = 0;
-//       for (int i = 0; i < 4; i++) {
-//           integral_error[i] = 0;
-//       }
-//     }
-//     Serial.print("Desired Speed (m/s): ");
-//     Serial.print(desired_speed_mps);
-//     Serial.print("\t Angular Speed (rad/s): ");
-//     Serial.println(desired_angular_speed_rps);
-// }
 
 
 
