@@ -81,10 +81,10 @@ try:
             "cmd": True,
             "linearx_mps": desired_speed_mps, # desired fwd speed
             "angularz_rps": desired_angular_speed_rps, # desired angular speed
-            "actuator_extend": bool(buttons["A"]),
-            "actuator_retract": bool(buttons["B"]),
-            "dig_belt": bool(buttons["X"]),
-            "dump_belt": bool(buttons["Y"]),
+            "actuator_extend": buttons["A"],
+            "actuator_retract": buttons["B"],
+            "dig_belt": buttons["X"],
+            "dump_belt": buttons["Y"],
             "dpad": {"x": dpad_x, "y": dpad_y},
             "Kp": Kp,
             "Ki": Ki,
@@ -98,14 +98,17 @@ try:
         sock.sendto(json_string.encode(), (PI_IP, PORT))
         print(json_string)
 
-        time.sleep(1 / MESSAGES_PER_SECOND)
+        
 
         # request an update from arduino 
         if (time.time() - last_update_time >= update_time_s):
+            time.sleep(1 / 20) # let the arduino process the cmd before sending update
             json_string = json.dumps(update)
             sock.sendto(json_string.encode(), (PI_IP, PORT))
             print(json_string)
             last_update_time = time.time()
+
+        time.sleep(1 / MESSAGES_PER_SECOND)
 
         # Exit condition (check for ESC key or a specific button combo)
         for event in pygame.event.get():
