@@ -4,7 +4,8 @@ import json
 import time
 
 # Network setup
-PI_IP = "192.168.0.90"  # Raspberry Pi's IP
+#PI_IP = "192.168.0.90"  # Raspberry Pi's IP CenturyLink
+PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
 PORT = 5005
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -51,7 +52,7 @@ update = {
         "cmd": False,
         # "drive_train": {"set_linearx_mps": False, "set_angularz_rps": False, "actual_linearx_mps": True, "actual_angularz_rps": True, "get_Kp": False, "get_Ki": False, "get_state": {}},
         # "actuator": {"get_state": True,"get_pwm": {}},
-        "dig_belt": {"get_state": True, "get_pwm": {}, "get_speed": {}},
+        # "dig_belt": {"get_state": True, "get_pwm": {}, "get_speed": {}},
         # "dump_belt": {"get_state": True,"get_pwm": {}, "get_loads": {}, "get_full": {}}
     }
 
@@ -79,20 +80,20 @@ try:
 
         # Create data packet (command)
         data = {
-            "cmd": True,
-            "linearx_mps": desired_speed_mps, # desired fwd speed
-            "angularz_rps": desired_angular_speed_rps, # desired angular speed
-            "actuator_extend": buttons["A"],
-            "actuator_retract": buttons["B"],
-            "dig_belt": buttons["X"],
-            "dump_belt": buttons["Y"],
-            "dpad": {"x": dpad_x, "y": dpad_y},
-            "Kp": Kp,
-            "Ki": Ki,
-            "dutyA": 50,                #actuator % duty (for extend 50, for retract 100)
-            "dutyB": 100,                #dig belt % duty (probably set value)
-            "dutyD": 100              #dump belt % duty (run as fast as possible)
-        }
+                "cmd": True,
+                "linearx_mps": desired_speed_mps, # desired fwd speed
+                "angularz_rps": desired_angular_speed_rps, # desired angular speed
+                "actuator_extend": buttons["A"],
+                "actuator_retract": buttons["B"],
+                "dig_belt": buttons["X"],
+                "dump_belt": buttons["Y"],
+                "dpad": {"x": dpad_x, "y": dpad_y},
+            #     "Kp": Kp,
+            #     "Ki": Ki,
+            #     "dutyA": {"extend_speed": 50, "retract_speed": 100},                #actuator % duty (for extend 50, for retract 100)
+            #     "dutyB": 100,                #dig belt % duty (probably set value)
+            #     "dutyD": 100              #dump belt % duty (run as fast as possible)
+            }
 
         # Convert to JSON and send
         json_string = json.dumps(data)
