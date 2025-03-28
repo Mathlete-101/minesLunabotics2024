@@ -7,7 +7,8 @@ import threading
 from gui import init_gui
 
 # Network setup
-PI_IP = "192.168.0.90"  # Raspberry Pi's IP
+# PI_IP = "192.168.0.90"  # Raspberry Pi's IP centurylink
+PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
 PORT = 5005
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -48,7 +49,7 @@ MAX_ANGULAR_SPEED_RPS = (25 * 2 * 3.14159) / 60  # Convert 25 RPM to rad/s
 MESSAGES_PER_SECOND = 10
 
 
-UPDATE_TIME_S = 3 # get an update every 3 seconds
+UPDATE_TIME_S = 0.2 # get an update every seconds
 
 update = {
         "cmd": False,
