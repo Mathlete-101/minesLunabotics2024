@@ -67,7 +67,7 @@ def init_gui(gui_queue):
     status_label.grid(row=0, column=0, columnspan=4, pady=10, sticky="ns")
 
     # Drive Train frame 
-    drive_train_frame = tk.LabelFrame(main_frame, text="Drive Train", font=("Arial", 16), padx=10, pady=10, bg="lightgray", borderwidth=4)
+    drive_train_frame = tk.LabelFrame(main_frame, text="Drivetrain", font=("Arial", 16), padx=10, pady=10, bg="lightgray", borderwidth=4)
     drive_train_frame.grid(row=1, column=0, columnspan=4, rowspan=4, pady=5, sticky="we")
 
     dt_state_label = tk.Label(drive_train_frame, text="State: Waiting", font=("Arial", 12), bg="SeaGreen3")

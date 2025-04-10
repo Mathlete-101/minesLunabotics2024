@@ -4,8 +4,8 @@ import json
 import time
 
 # Network setup
-#PI_IP = "192.168.0.90"  # Raspberry Pi's IP CenturyLink
-PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
+PI_IP = "192.168.0.90"  # Raspberry Pi's IP CenturyLink
+#PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
 PORT = 5005
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
