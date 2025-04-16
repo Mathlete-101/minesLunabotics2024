@@ -1,10 +1,10 @@
 
 #include <Encoder.h>
 
-#define CNV_MTR_PWM 4       
-#define CNV_MTR_DIR 30
-#define CNV_ENC_A 18
-#define CNV_ENC_B 47
+#define CNV_MTR_PWM 12     
+#define CNV_MTR_DIR 17
+#define CNV_ENC_A 19
+#define CNV_ENC_B 29
 
 // #define FWR_MTR_PWM 7        
 // #define FWR_MTR_DIR 6 

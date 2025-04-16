@@ -8,7 +8,7 @@ from gui import init_gui
 
 # Network setup
 PI_IP = "192.168.0.90"  # Raspberry Pi's IP centurylink
-#PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
+# PI_IP = "192.168.1.123"  # Raspberry Pi's IP campers
 PORT = 5005
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -30,7 +30,7 @@ BUTTON_MAP = {
     "A": 0,     # actuator extend
     "B": 1,     # actuator retract
     "X": 2,     #  dig belt on
-    "Y": 3    # dump belt on
+    "Y": 3      # dump belt on
 }
 
 running = True  # Flag to control the main loop
@@ -47,9 +47,11 @@ MAX_SPEED_MPS = 0.412  # Max wheel speed in m/s
 MAX_ANGULAR_SPEED_RPS = (25 * 2 * 3.14159) / 60  # Convert 25 RPM to rad/s
 
 MESSAGES_PER_SECOND = 10
+UPDATE_TIME_S = 0.1 # How often to request an update in seconds
 
 
-UPDATE_TIME_S = 0.2 # get an update every seconds
+UPDATE_EVERY_MESSAGE = 3
+sent_messages = 0
 
 update = {
         "cmd": False,
@@ -77,8 +79,10 @@ def receive_data():
             print("Received error:", e)
 # end receive_data
 
+
 def main():
     global running
+    global sent_messages # Declare sent_messages as global
     last_update_time = time.time()
     threading.Thread(target=receive_data, daemon=True).start()
     threading.Thread(target=init_gui, args=(gui_queue,), daemon=True).start()
@@ -117,25 +121,29 @@ def main():
                 "dpad": {"x": dpad_x, "y": dpad_y},
             #     "Kp": Kp,
             #     "Ki": Ki,
-            #     "dutyA": {"extend_speed": 50, "retract_speed": 100},                #actuator % duty (for extend 50, for retract 100)
-            #     "dutyB": 100,                #dig belt % duty (probably set value)
-            #     "dutyD": 100              #dump belt % duty (run as fast as possible)
+            #     "dutyA": {"extend_speed": 50, "retract_speed": 100},             #actuator % duty (for extend 50, for retract 100)
+            #     "dutyB": 100,                 #dig belt % duty (probably set value)
+            #     "dutyD": 100                  #dump belt % duty (run as fast as possible)
             }
 
+            sent_messages += 1
+            if sent_messages % UPDATE_EVERY_MESSAGE == 0:
+                data["cmd"] = False
+            else:
+                data["cmd"] = True
             # Convert to JSON and send
             json_string = json.dumps(data)
             sock.sendto(json_string.encode(), (PI_IP, PORT))
             # print(json_string)
 
-            
 
-            # request an update from arduino 
-            if (time.time() - last_update_time >= UPDATE_TIME_S):
-                time.sleep(1 / 20) # let the arduino process the cmd before sending update
-                json_string = json.dumps(update)
-                sock.sendto(json_string.encode(), (PI_IP, PORT))
-                # print(json_string)
-                last_update_time = time.time()
+            # # request an update from arduino
+            # if (time.time() - last_update_time >= UPDATE_TIME_S):
+            #     time.sleep(1 / 20) # let the arduino process the cmd before sending update
+            #     json_string = json.dumps(update)
+            #     sock.sendto(json_string.encode(), (PI_IP, PORT))
+            #     # print(json_string)
+            #     last_update_time = time.time()
 
             time.sleep(1 / MESSAGES_PER_SECOND)
 
@@ -159,15 +167,21 @@ def main():
         })
 
         for _ in range(3):
-            sock.sendto(zero_data.encode(), (PI_IP, PORT))
-            print("Sent stop command:", zero_data)
+            try:
+                sock.sendto(zero_data.encode(), (PI_IP, PORT))
+                print("Sent stop command:", zero_data)
+            except Exception as e:
+                print("Error sending stop command:", e)
             time.sleep(1 / MESSAGES_PER_SECOND)
 
         # Clean up resources
         joystick.quit()
         pygame.quit()
-        sock.close()
-        print("Controller and socket closed.")
+        try:
+            sock.close()
+            print("Controller and socket closed.")
+        except Exception as e:
+            print("Error closing socket:", e)
 # end main
 
 if __name__ == "__main__":
