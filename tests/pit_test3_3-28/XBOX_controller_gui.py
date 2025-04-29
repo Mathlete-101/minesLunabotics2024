@@ -124,6 +124,7 @@ def main():
             #     "dutyA": {"extend_speed": 50, "retract_speed": 100},             #actuator % duty (for extend 50, for retract 100)
             #     "dutyB": 100,                 #dig belt % duty (probably set value)
             #     "dutyD": 100                  #dump belt % duty (run as fast as possible)
+                "fan_speed": 0,
             }
 
             sent_messages += 1
